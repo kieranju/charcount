@@ -1,11 +1,14 @@
 var submit = document.getElementById('submit');
 
-submit.onclick = function()
+function get (name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
+
+function charcount (word)
 {
     var store = {};
-
-    var input = document.getElementById('word'),
-        word = input.value;
 
     /* this removes whitespaces */
     // if (/\s/g.test(word))
@@ -22,4 +25,15 @@ submit.onclick = function()
     }
 
     document.getElementById('result').innerHTML = JSON.stringify(store, null, 4);
+}
+
+window.onload = function ()
+{
+    var word = get('w');
+    if (word) charcount(word);
+};
+
+submit.onclick = function ()
+{
+    charcount(document.getElementById('word').value);
 };
