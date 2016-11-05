@@ -1,39 +1,28 @@
 var submit = document.getElementById('submit');
+var input = document.getElementById('word');
+var output = document.getElementById('result');
 
-function get (name)
-{
-   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-      return decodeURIComponent(name[1]);
+function charcount(word) {
+  var chars = {};
+
+  // remove whitespace
+  // if (/\s/g.test(word))
+  // {
+  //   word = word.replace(/\W/g, '');
+  // }
+
+  // iterate characters
+  for (var i = word.length - 1; i >= 0; i--) {
+      var char = word[i];
+      var val = chars[char];
+
+      // increment count of character
+      chars[char] = (typeof val === 'undefined') ? 1 : ++val;
+  }
+
+  output.innerHTML = JSON.stringify(chars, null, 4);
 }
 
-function charcount (word)
-{
-    var store = {};
-
-    /* this removes whitespaces */
-    // if (/\s/g.test(word))
-    // {
-    //     word = word.replace(/\W/g, '');
-    // }
-
-    for (var i = word.length - 1; i >= 0; i--)
-    {
-        var key = word[i],
-            val = store[key];
-
-        store[key] = (typeof val == 'undefined') ? 1 : ++val;
-    }
-
-    document.getElementById('result').innerHTML = JSON.stringify(store, null, 4);
-}
-
-window.onload = function ()
-{
-    var word = get('w');
-    if (word) charcount(word);
-};
-
-submit.onclick = function ()
-{
-    charcount(document.getElementById('word').value);
+submit.onclick = function () {
+  charcount(input.value);
 };
